@@ -23,3 +23,5 @@ An SOS Alert application to help send SMS alerts to the police and to your emerg
 ## Screenshots
 --------------------------------------------------
 ![ss1](images/ss.jpg)
+
+### Web Dashboard is still WORK IN PROGRESS............
