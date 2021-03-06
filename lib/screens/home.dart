@@ -1,21 +1,21 @@
 import 'dart:async';
 
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:hardware_buttons/hardware_buttons.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sms_maintained/sms.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:hardware_buttons/hardware_buttons.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sms_maintained/sms.dart';
 
-import '../theme.dart';
 import '../signin.dart';
+import '../theme.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -25,8 +25,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   double wd, ht;
   SharedPreferences prefs;
-  bool loc = true, hardware=false;
-  int down=0, up=0;
+  bool loc = true, hardware = false;
+  int down = 0, up = 0;
   StreamSubscription _volumeButtonSubscription;
 
   void _enterNumber() {
@@ -139,19 +139,19 @@ class _HomeState extends State<Home> {
         });
         sender.sendSms(message);
       }
-      Get.snackbar('SOS sent!',
-          'All emergency contacts & police have been notified.');
+      Get.snackbar(
+          'SOS sent!', 'All emergency contacts & police have been notified.');
     }
   }
 
   void locationServices() async {
-    await Geolocator.checkPermission().then((permission) async{
+    await Geolocator.checkPermission().then((permission) async {
       if (permission != LocationPermission.always &&
           permission != LocationPermission.whileInUse) {
         await Geolocator.requestPermission();
       }
     });
-    await Geolocator.isLocationServiceEnabled().then((locationStatus) async{
+    await Geolocator.isLocationServiceEnabled().then((locationStatus) async {
       if (!locationStatus) {
         await Geolocator.openAppSettings();
         await Geolocator.openLocationSettings();
@@ -166,8 +166,8 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-
-    _volumeButtonSubscription = volumeButtonEvents.listen((VolumeButtonEvent event) {
+    _volumeButtonSubscription =
+        volumeButtonEvents.listen((VolumeButtonEvent event) {
       print('zzzzzzzzzzzzzzzzzzzzzzzzzzz');
 //      if(hardware){
 //        if(event==VolumeButtonEvent.VOLUME_DOWN){
@@ -191,23 +191,27 @@ class _HomeState extends State<Home> {
 //      }
     });
 
-    RawKeyboard.instance.addListener((RawKeyEvent event){
+    RawKeyboard.instance.addListener((RawKeyEvent event) {
       print('hhhhhkhbkbkbkbkn');
-      if(hardware){
-        if(event.runtimeType==RawKeyDownEvent && event.physicalKey.debugName=='Audio Volume Down'){
+      if (hardware) {
+        if (event.runtimeType == RawKeyDownEvent &&
+            event.physicalKey.debugName == 'Audio Volume Down') {
           print('Volume Down Button Detected');
           down++;
         }
-        if(event.runtimeType==RawKeyDownEvent && event.physicalKey.debugName=='Audio Volume Up'){
+        if (event.runtimeType == RawKeyDownEvent &&
+            event.physicalKey.debugName == 'Audio Volume Up') {
           print('Volume Up Button Detected');
           up++;
         }
-        if(event.runtimeType==RawKeyDownEvent && down == 2 && up ==1){
+        if (event.runtimeType == RawKeyDownEvent && down == 2 && up == 1) {
           print('DETECTED HARDWARE BUTTON SEQUENCE');
           _sendSMS();
         }
       }
-      if(event.runtimeType==RawKeyDownEvent && event.physicalKey.debugName=='Audio Volume Down' && down==1){
+      if (event.runtimeType == RawKeyDownEvent &&
+          event.physicalKey.debugName == 'Audio Volume Down' &&
+          down == 1) {
         Timer(Duration(seconds: 2), () async {
           down = 0;
           up = 0;
@@ -251,7 +255,10 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.only(right: 25),
             child: GestureDetector(
               onTap: () => Get.toNamed('/contacts'),
-              child: Icon(Icons.contacts, size: 30,),
+              child: Icon(
+                Icons.contacts,
+                size: 30,
+              ),
             ),
           ),
         ],
@@ -259,7 +266,11 @@ class _HomeState extends State<Home> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text('Send SOS signal to all Emergency Contacts\nPress\n👇', textAlign: TextAlign.center, style: TextStyle(fontSize: 18),),
+          Text(
+            'Send SOS signal to all Emergency Contacts\nPress\n👇',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18),
+          ),
           AvatarGlow(
             glowColor: Theme.of(context).accentColor,
             endRadius: wd * 0.5,
@@ -281,53 +292,48 @@ class _HomeState extends State<Home> {
             ),
           ),
           SizedBox(
-            width: wd*0.8,
+            width: wd * 0.8,
             child: Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               columnWidths: {0: FractionColumnWidth(0.7)},
               children: [
-                TableRow(
-                  children: [
-                    Text('Send Location Coordinates:'),
-                    CupertinoSwitch(
-                      activeColor: Theme.of(context).cursorColor,
-                      value: loc,
-                      onChanged: (val) async {
-                        setState(() {
-                          loc = val;
-                        });
-                        await prefs.setBool('loc', loc);
-                      },
-                    ),
-                  ]
-                ),
-                TableRow(
-                  children: [
-                    Text('Dark Mode'),
-                    CupertinoSwitch(
-                      activeColor: Theme.of(context).cursorColor,
-                      value: themeChange.darkTheme,
-                      onChanged: (isDarkMode) {
-                        themeChange.darkTheme = isDarkMode;
-                      },
-                    ),
-                  ]
-                ),
-                TableRow(
-                  children: [
-                    Text('Hardware Shortcut\nPress VOLUME DOWN twice & VOLUME UP once'),
-                    CupertinoSwitch(
-                      activeColor: Theme.of(context).cursorColor,
-                      value: hardware,
-                      onChanged: (val) async{
-                        setState(() {
-                          hardware = val;
-                        });
-                        await prefs.setBool('hardware', hardware);
-                      },
-                    ),
-                  ]
-                ),
+                TableRow(children: [
+                  Text('Send Location Coordinates:'),
+                  CupertinoSwitch(
+                    activeColor: Theme.of(context).canvasColor,
+                    value: loc,
+                    onChanged: (val) async {
+                      setState(() {
+                        loc = val;
+                      });
+                      await prefs.setBool('loc', loc);
+                    },
+                  ),
+                ]),
+                TableRow(children: [
+                  Text('Dark Mode'),
+                  CupertinoSwitch(
+                    activeColor: Theme.of(context).canvasColor,
+                    value: themeChange.darkTheme,
+                    onChanged: (isDarkMode) {
+                      themeChange.darkTheme = isDarkMode;
+                    },
+                  ),
+                ]),
+                TableRow(children: [
+                  Text(
+                      'Hardware Shortcut\nPress VOLUME DOWN twice & VOLUME UP once'),
+                  CupertinoSwitch(
+                    activeColor: Theme.of(context).canvasColor,
+                    value: hardware,
+                    onChanged: (val) async {
+                      setState(() {
+                        hardware = val;
+                      });
+                      await prefs.setBool('hardware', hardware);
+                    },
+                  ),
+                ]),
               ],
             ),
           ),

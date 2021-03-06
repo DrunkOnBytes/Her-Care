@@ -40,9 +40,7 @@ class Styles {
 
       backgroundColor: isDarkTheme ? Color(0xff3f2b7f) : Color(0xfffbdbf4),
       cardColor: isDarkTheme ? Color(0xff009c96) : Color(0xffffffff),
-
-      cursorColor: isDarkTheme ? Colors.green : Color(0xff42a5f5),
-
+      canvasColor: isDarkTheme ? Colors.green : Color(0xff42a5f5),
       buttonColor: isDarkTheme ? Color(0xff55cec7) : Color(0xff009c96),
       splashColor: isDarkTheme ? Color(0xffff77a9) : Color(0xffb4004e),
 //      highlightColor: isDarkTheme ? Color(0xff372901) : Color(0xffFCE192),

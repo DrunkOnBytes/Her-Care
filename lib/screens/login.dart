@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -101,11 +102,11 @@ class _LoginState extends State<Login> {
             ),
           ),
           Positioned(
-            bottom: ht*0.12,
+            bottom: ht * 0.12,
             child: Container(
               width: wd,
               height: ht * 0.27,
-              padding: EdgeInsets.fromLTRB(10,0,10,20),
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,28 +115,46 @@ class _LoginState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Her Care', style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                      ),),
-                      SizedBox(height:8,),
                       Text(
-                        'The best protection any woman can have.....is courage.', style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                      ),),
+                        'Her Care',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        'The best protection any woman can have.....is courage.',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ],
                   ),
-                  RaisedButton(
-                    splashColor: Color(0xffff80ab),
-                    color: Color(0xffffafef),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      // splashColor: Color(0xffff80ab),
+                      // color: Color(0xffffafef),
+                      // shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(40),
+                      //     side: BorderSide(color: Colors.black38, width: 0.5)),
+                      // highlightElevation: 0,
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Color(0xffffafef)),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Color(0xffffafef)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40),
+                              side: BorderSide(
+                                  color: Colors.black38, width: 0.5))),
+                    ),
                     onPressed: () => signIn(),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40),
-                        side: BorderSide(color: Colors.black38, width: 0.5)),
-                    highlightElevation: 0,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                       child: Row(
